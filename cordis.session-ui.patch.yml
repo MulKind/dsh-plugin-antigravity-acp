@@ -1,0 +1,54 @@
+# >>> dsh-antigravity-acp begin >>>
+# Overlay patch for @zaimokuza/dsh-acp-adapter (DSH Session UI primary agent integration)
+# + @deepseek-ai/dsh-subagent-acp (subagent_antigravity delegation tool).
+#
+# Apply via:
+#   dsh web --patch ./cordis.session-ui.patch.yml
+
+# 1) DSH Session UI integration (@zaimokuza/dsh-acp-adapter)
+- id: dsh-acp-adapter
+  config:
+    toolApprovalDefault: ask
+    agents:
+      antigravity:
+        name: 'Antigravity'
+        command: 'agy'
+        args: ['acp']
+        runtime: antigravity
+        catalogId: antigravity-acp
+        loginHint: 'agy acp --login'
+        env:
+          HTTP_PROXY: 'http://127.0.0.1:10808'
+          HTTPS_PROXY: 'http://127.0.0.1:10808'
+          ALL_PROXY: 'http://127.0.0.1:10808'
+          NO_PROXY: 'localhost,127.0.0.1,::1,.local'
+          http_proxy: 'http://127.0.0.1:10808'
+          https_proxy: 'http://127.0.0.1:10808'
+          all_proxy: 'http://127.0.0.1:10808'
+          no_proxy: 'localhost,127.0.0.1,::1,.local'
+
+# 2) DSH Native Subagent delegation (@deepseek-ai/dsh-subagent-acp + subagent_antigravity)
+- insert:
+    - id: subagent-antigravity-acp
+      name: '@deepseek-ai/dsh-subagent-acp'
+      config:
+        providerName: antigravity
+        command: !!js "process.env.DSH_AGY_BIN ?? 'agy'"
+        args: ['acp']
+        permission: allow
+        env:
+          HTTP_PROXY: 'http://127.0.0.1:10808'
+          HTTPS_PROXY: 'http://127.0.0.1:10808'
+          ALL_PROXY: 'http://127.0.0.1:10808'
+          NO_PROXY: 'localhost,127.0.0.1,::1,.local'
+          http_proxy: 'http://127.0.0.1:10808'
+          https_proxy: 'http://127.0.0.1:10808'
+          all_proxy: 'http://127.0.0.1:10808'
+          no_proxy: 'localhost,127.0.0.1,::1,.local'
+    - id: tool-subagent-antigravity
+      name: '@deepseek-ai/dsh-tool-subagent'
+      config:
+        provider: antigravity
+        toolName: subagent_antigravity
+        maxDepth: provider-managed
+# <<< dsh-antigravity-acp end <<<

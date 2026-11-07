@@ -1,0 +1,52 @@
+{
+  "name": "dsh-plugin-antigravity-acp",
+  "description": "DeepSeek Harness (DSH) plugin bundle to connect Antigravity CLI (agy acp) over Agent Client Protocol (ACP) with V2RayN proxy passthrough (127.0.0.1:10808).",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./cordis.session-ui.patch.yml": "./cordis.session-ui.patch.yml"
+  },
+  "files": [
+    "icon.svg",
+    "lib/index.js",
+    "cordis.patch.yml",
+    "cordis.session-ui.patch.yml"
+  ],
+  "license": "MIT",
+  "author": "MulKind",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MulKind/dsh-plugin-antigravity-acp.git"
+  },
+  "homepage": "https://github.com/MulKind/dsh-plugin-antigravity-acp#readme",
+  "bugs": {
+    "url": "https://github.com/MulKind/dsh-plugin-antigravity-acp/issues"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "engines": {
+    "dsh": ">=0.2.0-0 <1.0.0"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "*"
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh-subagent-acp": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-tool-subagent": "0.2.2-rc.1"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh-plugin",
+    "antigravity",
+    "acp",
+    "v2rayn"
+  ],
+  "icon": "./icon.svg"
+}

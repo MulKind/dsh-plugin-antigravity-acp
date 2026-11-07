@@ -1,0 +1,28 @@
+# dsh-plugin-antigravity-acp bundle patch layer for DeepSeek Harness (DSH).
+#
+# Mounts an out-of-process ACP subagent provider backed by Antigravity CLI (`agy acp`)
+# with V2RayN proxy passthrough (default http://127.0.0.1:10808) and exposes `subagent_antigravity`.
+
+- insert:
+    - id: subagent-antigravity-acp
+      name: '@deepseek-ai/dsh-subagent-acp'
+      config:
+        providerName: antigravity
+        command: !!js "process.env.DSH_AGY_BIN ?? 'agy'"
+        args: ['acp']
+        permission: allow
+        env:
+          HTTP_PROXY: !!js "process.env.HTTP_PROXY ?? process.env.HTTPS_PROXY ?? 'http://127.0.0.1:10808'"
+          HTTPS_PROXY: !!js "process.env.HTTPS_PROXY ?? process.env.HTTP_PROXY ?? 'http://127.0.0.1:10808'"
+          ALL_PROXY: !!js "process.env.ALL_PROXY ?? process.env.HTTPS_PROXY ?? 'http://127.0.0.1:10808'"
+          NO_PROXY: !!js "process.env.NO_PROXY ?? 'localhost,127.0.0.1,::1,.local'"
+          http_proxy: !!js "process.env.http_proxy ?? process.env.HTTP_PROXY ?? 'http://127.0.0.1:10808'"
+          https_proxy: !!js "process.env.https_proxy ?? process.env.HTTPS_PROXY ?? 'http://127.0.0.1:10808'"
+          all_proxy: !!js "process.env.all_proxy ?? process.env.ALL_PROXY ?? 'http://127.0.0.1:10808'"
+          no_proxy: !!js "process.env.no_proxy ?? process.env.NO_PROXY ?? 'localhost,127.0.0.1,::1,.local'"
+    - id: tool-subagent-antigravity
+      name: '@deepseek-ai/dsh-tool-subagent'
+      config:
+        provider: antigravity
+        toolName: subagent_antigravity
+        maxDepth: provider-managed
